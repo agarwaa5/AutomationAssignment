@@ -1,0 +1,57 @@
+package Utility;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import PageFactory.OttonovaPageFactory;
+
+public class WebDriverHelper {
+	
+	static WebDriverHelper wHelper;
+	static WebDriver driver;
+	
+	public static WebDriverHelper getWebDriverHelper() {
+		if (wHelper == null) {
+			wHelper = new WebDriverHelper();
+		}
+		return wHelper;
+	}
+	
+	public static WebDriver getWebDriver() {
+		return driver;
+	}
+	
+
+	public static void startUpDriver(String Browser, String Os, String path, String headless) {
+		
+		System.out.println("browser value is " +PropertyFileHandler.readProperty("Browser"));
+		System.out.println("OS value is " +PropertyFileHandler.readProperty("Os"));
+		System.out.println("Path value is " +PropertyFileHandler.readProperty("path"));
+		System.out.println("Headless value is " +PropertyFileHandler.readProperty("Headless"));
+		
+		if (Browser.equalsIgnoreCase("ie") && headless.equals("no")) {
+        	System.setProperty("webdriver.ie.driver", path);
+            driver = new InternetExplorerDriver();
+        } else if (Browser.equalsIgnoreCase("chrome") && headless.equals("yes")) {
+        	System.out.println("Inside chrome");
+        	System.setProperty("webdriver.chrome.driver", path);
+            driver = new ChromeDriver();
+        } else if (Browser.equalsIgnoreCase("ff") && headless.equals("no")) {
+        	System.setProperty("webdriver.gecko.driver", path);
+            driver = new FirefoxDriver();
+        }
+		
+		driver.manage().deleteAllCookies();
+        driver.manage().window().maximize();
+		
+	}
+	
+	public void enterURL(String url) throws InterruptedException {
+		driver.navigate().to(url);
+		Thread.sleep(5000);
+	}
+}

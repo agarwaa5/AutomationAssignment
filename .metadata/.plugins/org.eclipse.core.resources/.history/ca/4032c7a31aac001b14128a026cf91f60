@@ -1,0 +1,84 @@
+package Utility;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import PageFactory.OttonovaPageFactory;
+
+public class WebDriverHelper {
+	
+	static WebDriverHelper wHelper;
+	static WebDriver driver;
+	
+	public static WebDriverHelper getWebDriverHelper() {
+		if (wHelper == null) {
+			wHelper = new WebDriverHelper();
+		}
+		return wHelper;
+	}
+	
+	public static WebDriver getWebDriver() {
+		return driver;
+	}
+	
+
+	public static void startUpDriver(String Browser, String Os, String path, String headless) {
+		
+		System.out.println("browser value is " +PropertyFileHandler.readProperty("Browser"));
+		System.out.println("OS value is " +PropertyFileHandler.readProperty("Os"));
+		System.out.println("Path value is " +PropertyFileHandler.readProperty("path"));
+		System.out.println("Headless value is " +PropertyFileHandler.readProperty("Headless"));
+		
+//		if (Browser.equalsIgnoreCase("ie") && headless.equals("no")) {
+//        	System.setProperty("webdriver.ie.driver", path);
+//            driver = new InternetExplorerDriver();
+//        } else if (Browser.equalsIgnoreCase("chrome") && headless.equals("no")) {
+//        	System.out.println("Inside chrome");
+//        	System.setProperty("webdriver.chrome.driver", path);
+//            driver = new ChromeDriver();
+//        } else if (Browser.equalsIgnoreCase("ff") && headless.equals("no")) {
+//        	System.setProperty("webdriver.gecko.driver", path);
+//            driver = new FirefoxDriver();
+//        }
+//        else if (Browser.equals("chrome") && Os.equals("Windows") && headless.equals("yes")) {
+//			System.setProperty("webdriver.chrome.driver", path);
+//			ChromeOptions options = new ChromeOptions();
+//			options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200",
+//					"--ignore-certificate-errors", "--silent");
+//			driver = new ChromeDriver(options);
+//		}
+		
+		if (Browser.equalsIgnoreCase("chrome") && headless.equals("no")) {
+        	System.out.println("Inside chrome");
+        	System.setProperty("webdriver.chrome.driver", path);
+            driver = new ChromeDriver();
+       }
+			else if (Browser.equals("chrome") && Os.equals("Windows") && headless.equals("yes")) {
+			System.setProperty("webdriver.chrome.driver", path);
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200",
+					"--ignore-certificate-errors", "--silent");
+			driver = new ChromeDriver(options);
+		}
+		
+		driver.manage().deleteAllCookies();
+        driver.manage().window().maximize();
+		
+	}
+	
+	public void enterURL(String url) throws InterruptedException {
+		driver.navigate().to(url);
+	//	Thread.sleep(5000);
+		
+		// Initialize and wait till element(link) became clickable - timeout in 10 seconds
+		WebElement homepage = new WebDriverWait(driver, 10)
+				 .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[text()=' Wann bist du ']")));
+	}
+}

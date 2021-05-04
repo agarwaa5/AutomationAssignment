@@ -1,0 +1,9 @@
+Browser=chrome
+Os=Windows
+#path=src/resources/Drivers/chromedriver_win32_89/chromedriver.exe
+path=src/resources/Drivers/geckodriver-v0.29.1-win64/geckodriver.exe
+Headless=no
+url= https://www.ottonova.de/online-beitragsrechner/
+income=70000
+startDate=01.05.2021
+birthDate=01.01.2020

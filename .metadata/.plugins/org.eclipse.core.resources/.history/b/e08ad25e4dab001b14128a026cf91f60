@@ -1,0 +1,106 @@
+package Webpages;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import PageFactory.OttonovaPageFactory;
+import Utility.WebDriverHelper;
+
+
+public class Beitragsrechner {
+	
+	static Beitragsrechner object;
+	
+	public static Beitragsrechner getBeitragsrechner() {
+		if (object == null)
+			object = new Beitragsrechner();
+		return object;
+		
+	}
+	
+	JavascriptExecutor js = (JavascriptExecutor)WebDriverHelper.getWebDriver();	
+	
+	public void clickJetztBeitragberechnen() throws InterruptedException {
+		OttonovaPageFactory.pf.uiJetztBTN.click();
+		Thread.sleep(5000);
+		System.out.println("window handles are" +WebDriverHelper.getWebDriver().getWindowHandles());
+		OttonovaPageFactory.pf.uiAkzeptierenBTN.click();
+	}
+	
+	public void clickAngestellt() {
+		OttonovaPageFactory.pf.uiAngestelltRadioBTN.click();
+	}
+	
+	public void enterIncome(String income) {
+		
+		System.out.println("no of iframes" +WebDriverHelper.getWebDriver().findElements(By.xpath("//iframe")).size());
+//		String currentFrameName = (String)((JavascriptExecutor) WebDriverHelper.getWebDriver()).executeScript("return window.frameElement.id");
+//		System.out.println("currentFrameName" +currentFrameName);
+		
+//		WebDriverWait wait = new WebDriverWait(WebDriverHelper.getWebDriver(), 30);
+//		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@class='salary form-field ng-pristine ng-valid ng-touched']")));
+        
+//		OttonovaPageFactory.pf.uiIncomeTXT.click();
+		OttonovaPageFactory.pf.uiIncomeTXT.sendKeys(income);
+	}
+	
+	public void clickWeiter() {
+		OttonovaPageFactory.pf.uiWeiterBTN.click();
+	}
+	
+	public void selectVollversicherungStartDate(String startDate) {
+		Select uiStartDate = new Select(WebDriverHelper.getWebDriver().findElement(By.xpath("//*[@formcontrolname='ingress_date']")));
+		uiStartDate.selectByVisibleText(startDate);
+	}
+	
+	public void enterBirthDate() {		
+		
+		//Enter day
+		WebElement day = (WebElement) js.executeScript("return document.querySelector('otto-input-birthday-zodiac').shadowRoot.querySelector('input')");
+		String jse1 = "arguments[0].value='01'";
+		((JavascriptExecutor) WebDriverHelper.getWebDriver()).executeScript(jse1, day);
+		
+		//Enter month
+		WebElement month = (WebElement) js.executeScript("return document.querySelector('otto-input-birthday-zodiac').shadowRoot.querySelector('div > div > input.month')");
+		String jse2 = "arguments[0].value='01'";
+		((JavascriptExecutor) WebDriverHelper.getWebDriver()).executeScript(jse2, month);
+		
+		//Enter year
+		WebElement year = (WebElement) js.executeScript("return document.querySelector('otto-input-birthday-zodiac').shadowRoot.querySelector('div > div > input.year')");
+		String jse3 = "arguments[0].value='2020'";
+		((JavascriptExecutor) WebDriverHelper.getWebDriver()).executeScript(jse3, year);
+		
+		//to populate the error message
+		day.sendKeys(Keys.ENTER);
+	
+	}
+	
+	public void enterFutureBirthDate() {
+		
+		//Re-enter day
+		WebElement day = (WebElement) js.executeScript("return document.querySelector('otto-input-birthday-zodiac').shadowRoot.querySelector('input')");
+		String jse1 = "arguments[0].value='01'";
+		((JavascriptExecutor) WebDriverHelper.getWebDriver()).executeScript(jse1, day);
+		
+		//Re-enter month
+		WebElement month = (WebElement) js.executeScript("return document.querySelector('otto-input-birthday-zodiac').shadowRoot.querySelector('div > div > input.month')");
+		String jse2 = "arguments[0].value='01'";
+		((JavascriptExecutor) WebDriverHelper.getWebDriver()).executeScript(jse2, month);
+		
+		//Re-enter year
+		WebElement year = (WebElement) js.executeScript("return document.querySelector('otto-input-birthday-zodiac').shadowRoot.querySelector('div > div > input.year')");
+		String jse3 = "arguments[0].value='2022'";
+		((JavascriptExecutor) WebDriverHelper.getWebDriver()).executeScript(jse3, year);
+		
+		//to populate the error message
+		day.sendKeys(Keys.ENTER);
+		
+	}
+	
+
+}
